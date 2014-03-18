@@ -1,0 +1,1 @@
+settings append frame-format GUD-LLDB: ${line.file.fullpath}:${line.number} 
