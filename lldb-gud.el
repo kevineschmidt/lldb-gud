@@ -17,7 +17,7 @@
 (defvar gud-lldb-marker-regexp
   ;; This uses a special marker from lldb-gud.settings
   ;; This will probably fail on windows due to the colon?
-  (concat "GUD-LLDB: \\([^" ":" "\n]*\\)" ":"
+  (concat "^GUD-LLDB: \\([^" ":" "\n]*\\)" ":"
 	  "\\([0-9]*\\)" ".*\n.*"))
 
 (defun gud-lldb-marker-filter (string)
@@ -72,7 +72,10 @@
     output))
 
 
-(defcustom gud-lldb-command-name (format "%s --source %s " "lldb"  (expand-file-name "./lldb-gud.settings"))
+(defcustom gud-lldb-command-name
+  (format "%s --source %s " "lldb"
+          (concat (file-name-directory (or load-file-name buffer-file-name))
+                  "lldb-gud.settings"))
   "Default command to run an executable under GDB in text command mode.
 The option \"--fullname\" must be included in this value."
    :type 'string
@@ -132,3 +135,5 @@ directory and source-file directory for your debugger."
   (setq gud-running nil)
   (setq gud-filter-pending-text nil)
   (run-hooks 'gud-gdb-mode-hook))
+
+(provide 'lldb-gud)
